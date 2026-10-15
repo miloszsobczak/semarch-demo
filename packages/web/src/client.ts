@@ -15,3 +15,9 @@ export async function createTicket(subject: string): Promise<Ticket> {
   if (!response.ok) throw new Error('Could not create ticket');
   return response.json() as Promise<Ticket>;
 }
+
+export async function escalateTicket(id: string): Promise<Ticket> {
+  const response = await fetch(`${endpoint}/tickets/${id}/escalate`, { method: 'POST' });
+  if (!response.ok) throw new Error('Could not escalate ticket');
+  return response.json() as Promise<Ticket>;
+}

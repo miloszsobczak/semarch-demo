@@ -7,12 +7,15 @@ A small, public TypeScript system for exploring [semarch](https://semarch.dev). 
 ```sh
 npm install
 npm run check
+npm test
 npm start
 curl -X POST http://localhost:3000/tickets -H 'content-type: application/json' -d '{"subject":"Cannot sign in"}'
 curl http://localhost:3000/tickets
 ```
 
 The API stores tickets in memory and resets on restart. The web and worker packages are small reusable modules; they are here to show how a contract change reaches consumers. This is example code, not a production help desk.
+
+The escalation example adds `priority` to the shared ticket contract, an API endpoint, a browser action, and an urgent count in the worker digest. Try creating a ticket, then `POST /tickets/<id>/escalate` to make it urgent.
 
 ## Playground
 
