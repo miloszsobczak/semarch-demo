@@ -2,6 +2,11 @@
   "name": "@demo/api",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": { "@demo/contracts": "1.0.0" },
-  "scripts": { "start": "node dist/server.js" }
+  "dependencies": {
+    "@demo/contracts": "1.0.0",
+    "redis": "^5.12.1"
+  },
+  "scripts": {
+    "start": "node dist/server.js"
+  }
 }

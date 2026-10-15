@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { TicketService } from './service.js';
 import { TicketStore } from './store.js';
+import { publishEscalation } from './events.js';
 
 const service = new TicketService(new TicketStore());
 const server = createServer(async (request, response) => {
@@ -30,6 +31,7 @@ const server = createServer(async (request, response) => {
   const escalate = request.url?.match(/^\/tickets\/([^/]+)\/escalate$/);
   if (request.method === 'POST' && escalate) {
     const ticket = service.escalate(escalate[1]);
+    if (ticket) void publishEscalation(ticket).catch((error) => console.error('Escalation event:', error));
     response.writeHead(ticket ? 200 : 404).end(JSON.stringify(ticket ?? { error: 'Not found' }));
     return;
   }
