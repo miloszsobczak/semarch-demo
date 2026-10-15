@@ -13,7 +13,7 @@ curl -X POST http://localhost:3000/tickets -H 'content-type: application/json' -
 curl http://localhost:3000/tickets
 ```
 
-The API stores tickets in memory and resets on restart. The web and worker packages are small reusable modules; they are here to show how a contract change reaches consumers. This is example code, not a production help desk.
+The API stores tickets in memory and resets on restart. The web package is a browser module, while the worker can run as an event consumer through Compose. Both show how a contract change reaches consumers. This is example code, not a production help desk.
 
 ## Run the system map
 
