@@ -2,5 +2,8 @@
   "name": "@demo/worker",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": { "@demo/contracts": "1.0.0" }
+  "dependencies": {
+    "@demo/contracts": "1.0.0",
+    "redis": "^5.12.1"
+  }
 }

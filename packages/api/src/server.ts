@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { TicketService } from './service.js';
 import { TicketStore } from './store.js';
+import { publishEscalation } from './events.js';
 
 const service = new TicketService(new TicketStore());
 const server = createServer(async (request, response) => {
@@ -13,7 +14,8 @@ const server = createServer(async (request, response) => {
     try {
       let body = '';
       for await (const chunk of request) body += chunk;
-      const ticket = service.create(JSON.parse(body).subject);
+      const input = JSON.parse(body);
+      const ticket = service.create(input.subject, input.priority);
       response.writeHead(201).end(JSON.stringify(ticket));
     } catch {
       response.writeHead(400).end(JSON.stringify({ error: 'Invalid ticket' }));
@@ -23,6 +25,13 @@ const server = createServer(async (request, response) => {
   const resolve = request.url?.match(/^\/tickets\/([^/]+)\/resolve$/);
   if (request.method === 'POST' && resolve) {
     const ticket = service.resolve(resolve[1]);
+    response.writeHead(ticket ? 200 : 404).end(JSON.stringify(ticket ?? { error: 'Not found' }));
+    return;
+  }
+  const escalate = request.url?.match(/^\/tickets\/([^/]+)\/escalate$/);
+  if (request.method === 'POST' && escalate) {
+    const ticket = service.escalate(escalate[1]);
+    if (ticket) void publishEscalation(ticket).catch((error) => console.error('Escalation event:', error));
     response.writeHead(ticket ? 200 : 404).end(JSON.stringify(ticket ?? { error: 'Not found' }));
     return;
   }

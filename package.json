@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -b",
     "check": "tsc -b --pretty false",
+    "test": "npm run build && node --test packages/api/test/*.test.mjs",
     "start": "node packages/api/dist/server.js"
   },
   "devDependencies": {
