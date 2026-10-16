@@ -56,6 +56,17 @@ services:
       api:
         condition: service_started
 
+  triage:
+    build:
+      context: services/triage
+    environment:
+      TRIAGE_PORT: "8083"
+    ports:
+      - "8083:8083"
+    depends_on:
+      api:
+        condition: service_started
+
   redis:
     image: redis:7-alpine
     healthcheck:

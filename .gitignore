@@ -5,3 +5,5 @@ dist/
 
 # Rust build output
 target/
+
+services/triage/target/
